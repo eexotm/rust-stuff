@@ -1,0 +1,73 @@
+adadadaduse std::{io, os::linux::net};
+#[derive(Debug)]
+enum Status {
+    Todo,
+    InProgess(i8),
+    Done,
+}
+#[derive(Debug)]
+struct Task {
+    description: String,
+    status: Status,
+}
+
+impl Task {
+    fn new_task(desc: &str) -> Self {
+        Task {
+            description: desc.to_string(),
+            status: Status::Todo,
+        }
+    }
+    fn mark_done(&mut self) {
+        self.status = Status::Done
+    }
+}
+fn main() {
+    let mut tasklist: Vec<Task> = Vec::new();
+    loop {
+        println!("Welcome to your Task manager one of the following options");
+        println!("1. Add a new task");
+        println!("2. Update a task status");
+        println!("3. List all the tasks");
+        println!("4. Exit");
+        let mut choice = String::new();
+        io::stdin().read_line(&mut choice);
+        match choice.trim().parse::<i32>() {
+            Ok(n) => { match n {
+                1 => {
+                println!("Description for the task: ");
+                let mut desc = String::new();
+                io::stdin().read_line(&mut desc).unwrap();
+                tasklist.push(Task::new_task(desc.trim()));
+                println!("Task {} have been created.", desc)
+                },
+                2  => {
+                    println!("{:?}", tasklist);
+                    println!(" Enter the description of the task you wish to update. (Case Sensitive)");
+                    let mut perc = String::new();
+                    io::stdin().read_line(&mut perc).unwrap();
+                    if tasklist.len() > 0 {
+                        for i in &mut tasklist {
+                            println!("Updating status for the task {}", i.description);
+                            if i.description == perc {
+                                let mut progress = String::new();
+                                io::stdin().read_line(&mut progress).unwrap();
+                                let progs:&str = &progress;
+                                match progs {
+                                    "100" => {i.status = Status::Done;}
+                                    "0" =>  {println!("You haven't done anyhting, this task is still a to do!")}
+                                    _ => {i.status = Status::InProgess(progs.parse().unwrap());}
+                                } } } } }
+                3 => {for (x, i) in tasklist.iter().enumerate() {
+                    println!("{}. The task {:?} that is {:?} done",x ,i.description, i.status);
+                    }
+                },
+            
+                4 => {panic!("Program ended!");},
+                _ => {println!("Invalid choice please try again!");},
+            }}
+            Err(e) => println!("Enter a NUMBER!."),
+        }
+           
+    }
+}
