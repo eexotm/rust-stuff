@@ -1,11 +1,12 @@
-
+#[allow(unused)]
+#[allow(unused_variables)]
 #[derive(Debug)]
 enum Types {
     int(i32),
     string(String),
     float(f64),
 }
-
+use std::collections::HashMap;
 
 fn main() {
     let mut v = vec![1,2,3];
@@ -29,4 +30,11 @@ fn main() {
     for i in &mut v3 {
         println!("{:?}", i);
     }
+    let mut scores: HashMap<String, i32> = HashMap::new();
+    scores.insert(String::from("Y"), 10);
+    scores.insert(String::from("Z"), 50);
+    scores.insert(String::from("Z"),30);
+    dbg!(&scores);
+
 }
+
