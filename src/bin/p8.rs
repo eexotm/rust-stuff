@@ -72,7 +72,7 @@ pub fn general(item: &impl Actions) {
 }
 
 pub fn general2<T: Actions>(item: &T) {
-    println!("Hello {}", item.print_details())s
+    println!("Hello {}", item.print_details());
 }
 
 pub fn general3<T,U>(t: &T, u: &U) where T: Actions, U: Actions, {
